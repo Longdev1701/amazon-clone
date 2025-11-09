@@ -48,7 +48,7 @@ cart.forEach((cartItem) => {
                 <span class="update-quantity-link link-primary js-update-quantity-link" data-product-id ="${matchingProduct.id}">
                 Update
                 </span>
-                <input class="quantity-input js-quantity-input-${matchingProduct.id}">
+                <input class="quantity-input js-quantity-input-${matchingProduct.id}" data-product-id ="${matchingProduct.id}">
                 <span class = "save-quantity-link js-save-quantity-link link-primary" data-product-id = "${matchingProduct.id}"> Save </span>
                 <span class="delete-quantity-link link-primary js-delete-link" data-product-id = "${matchingProduct.id}">
                 Delete
@@ -134,36 +134,51 @@ document.querySelectorAll(`.js-update-quantity-link`)
         });
     });
 
+
+function saveQuantity(productId){
+    const inputQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+
+    if (inputQuantity >= 0 && inputQuantity < 1000)
+    {
+        updateQuantitybyId(productId,inputQuantity);
+
+        document.querySelector(`.container-${productId}`)
+            .classList.remove('is-editing-quantity');
+
+        cart.forEach((cartItem) => {
+            if(cartItem.productId === productId){
+                document.querySelector(`.quantity-label-${productId}`)
+                    .innerHTML = cartItem.quantity;
+            }
+        });
+        
+        document.querySelector(`.js-check-valid-${productId}`)
+            .classList.remove('invalid');
+
+        updateQuantity();
+    }
+    else{
+        document.querySelector(`.js-check-valid-${productId}`)
+            .classList.add('invalid');
+    }
+
+}
 document.querySelectorAll('.js-save-quantity-link')
     .forEach((link) => {
         link.addEventListener('click',() => {
-
             const productId = link.dataset.productId;
-            const inputQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+            saveQuantity(productId);
+            
+        });
+    });
 
-            if (inputQuantity >= 0 && inputQuantity < 1000)
+document.querySelectorAll('.quantity-input')
+    .forEach((input) => {
+        input.addEventListener("keydown",(event) => {
+            const productId = input.dataset.productId;
+            if(event.key === "Enter")
             {
-                updateQuantitybyId(productId,inputQuantity);
-
-                document.querySelector(`.container-${productId}`)
-                    .classList.remove('is-editing-quantity');
-
-                cart.forEach((cartItem) => {
-                    if(cartItem.productId === productId){
-                        document.querySelector(`.quantity-label-${productId}`)
-                            .innerHTML = cartItem.quantity;
-                    }
-                });
-                
-                document.querySelector(`.js-check-valid-${productId}`)
-                    .classList.remove('invalid');
-
-                updateQuantity();
+                saveQuantity(productId);
             }
-            else{
-                document.querySelector(`.js-check-valid-${productId}`)
-                    .classList.add('invalid');
-            }
-
         });
     });
