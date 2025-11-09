@@ -1,15 +1,15 @@
-import {cart,removeFromCart,calculateCartQuantity} from '../data/cart.js';
+import {cart,removeFromCart,calculateCartQuantity,updateQuantitybyId} from '../data/cart.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
 let cartSummaryHTML = '';
 
-function updateQuanity(){
+function updateQuantity(){
     document.querySelector('.js-return-to-home-link')
         .innerHTML = `${calculateCartQuantity(cart)} items`
 }
 
-updateQuanity();
+updateQuantity();
 
 cart.forEach((cartItem) => {
     const productId = cartItem.productId;
@@ -25,7 +25,7 @@ cart.forEach((cartItem) => {
     
     cartSummaryHTML +=
     `
-    <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
+    <div class="cart-item-container js-cart-item-container-${matchingProduct.id} container-${matchingProduct.id}">
         <div class="delivery-date">
             Delivery date: Tuesday, June 21
         </div>
@@ -43,15 +43,18 @@ cart.forEach((cartItem) => {
             </div>
             <div class="product-quantity">
                 <span>
-                Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+                Quantity: <span class="quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
                 </span>
-                <span class="update-quantity-link link-primary js-quantity-link" data-product-id = "${matchingProduct.id}">
+                <span class="update-quantity-link link-primary js-update-quantity-link" data-product-id ="${matchingProduct.id}">
                 Update
                 </span>
+                <input class="quantity-input js-quantity-input-${matchingProduct.id}">
+                <span class = "save-quantity-link js-save-quantity-link link-primary" data-product-id = "${matchingProduct.id}"> Save </span>
                 <span class="delete-quantity-link link-primary js-delete-link" data-product-id = "${matchingProduct.id}">
                 Delete
                 </span>
             </div>
+                <p class = "check-valid js-check-valid-${matchingProduct.id}">Quantity should be beetween 0 and 1000</p>
             </div>
 
             <div class="delivery-options">
@@ -120,11 +123,47 @@ document.querySelectorAll('.js-delete-link')
         });
     });
 
-document.querySelectorAll('.js-quantity-link')
+document.querySelectorAll(`.js-update-quantity-link`)
     .forEach((link) => {
+        const productId = link.dataset.productId;
+
         link.addEventListener('click',() =>{
+            
+        document.querySelector(`.container-${productId}`)
+            .classList.add('is-editing-quantity')
+        });
+    });
+
+document.querySelectorAll('.js-save-quantity-link')
+    .forEach((link) => {
+        link.addEventListener('click',() => {
+
             const productId = link.dataset.productId;
-            
-            
+            const inputQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+
+            if (inputQuantity >= 0 && inputQuantity < 1000)
+            {
+                updateQuantitybyId(productId,inputQuantity);
+
+                document.querySelector(`.container-${productId}`)
+                    .classList.remove('is-editing-quantity');
+
+                cart.forEach((cartItem) => {
+                    if(cartItem.productId === productId){
+                        document.querySelector(`.quantity-label-${productId}`)
+                            .innerHTML = cartItem.quantity;
+                    }
+                });
+                
+                document.querySelector(`.js-check-valid-${productId}`)
+                    .classList.remove('invalid');
+
+                updateQuantity();
+            }
+            else{
+                document.querySelector(`.js-check-valid-${productId}`)
+                    .classList.add('invalid');
+            }
+
         });
     });
