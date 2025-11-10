@@ -1,6 +1,7 @@
 import {cart, addToCart,calculateCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
+import { renderOrderSummary } from './checkout/orderSummary.js';
 
 let productsHTML = '';
 
@@ -96,5 +97,6 @@ document.querySelectorAll('.js-add-to-cart-button')
 			}, 2000);
 
 			addedMessageTimeouts[productId] = timeoutId;
+
 		});
 	});
