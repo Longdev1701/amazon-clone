@@ -22,7 +22,7 @@ class Cart {
     }
 
     saveToStorage(){
-        localStorage.setItem(this.localStorageKey,JSON.stringify(this.cartItems));
+        localStorage.setItem(this.#localStorageKey,JSON.stringify(this.cartItems));
     }
 
 
@@ -80,7 +80,7 @@ class Cart {
         this.saveToStorage();
     }
 
-    calculateCartQuantity(cart){
+    calculateCartQuantity(){
         let cartQuantity = 0;
 
         this.cartItems.forEach((cartItem) => {
@@ -100,13 +100,10 @@ class Cart {
     }
 }
 
-const cart = new Cart('cart-oop');
-const businessCart = new Cart('businessCart-oop');
+export const cart = new Cart('cart-oop');
 
 
 
-console.log(cart);
-console.log(businessCart);
 
 
 

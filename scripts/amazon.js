@@ -1,4 +1,4 @@
-import {cart, addToCart,calculateCartQuantity} from '../data/cart.js';
+import {cart} from '../data/cart-class.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
@@ -70,7 +70,7 @@ updateQuantity();
 
 function updateQuantity(){
 	document.querySelector('.js-cart-quantity')
-		.innerHTML = calculateCartQuantity(cart);
+		.innerHTML = cart.calculateCartQuantity();
 	
 }
 
@@ -80,7 +80,7 @@ document.querySelectorAll('.js-add-to-cart-button')
 			//const productId = button.dataset.productId;
 			const {productId} = button.dataset;
 
-			addToCart(productId);
+			cart.addToCart(productId);
 			updateQuantity();
 
 			const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
