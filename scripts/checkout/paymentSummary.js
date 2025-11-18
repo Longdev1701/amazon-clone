@@ -71,8 +71,8 @@ export function renderPaymentSummary(){
             },
             body:JSON.stringify({
               cart: cart
-            })
-          });
+              })
+            });
 
           const order = await response.json();
           addOrder(order);
@@ -81,6 +81,14 @@ export function renderPaymentSummary(){
           }
 
           window.location.href = 'orders.html';
-        });
+          /*
+          .addEventListener('click',() => {
+            if(cart.length > 0){
+              addOrder(cart);
+              
+            }
+          */
+          });
+          
 }
 
