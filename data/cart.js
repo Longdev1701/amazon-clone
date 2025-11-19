@@ -123,3 +123,9 @@ export async function loadCartfetch(){
     const cart = response.text();
 
 }
+
+export function removeAllCart(){
+    let newCart = [];
+    cart = newCart;
+    saveToStorage();
+}

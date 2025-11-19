@@ -1,4 +1,4 @@
-import {cart} from '../../data/cart.js'
+import {cart,removeAllCart} from '../../data/cart.js'
 import { getProduct } from '../../data/products.js';
 import { getDeliveryOption } from '../../data/deliveryOptions.js';
 import {formatCurrency} from '../utils/money.js';
@@ -80,6 +80,7 @@ export function renderPaymentSummary(){
             console.log('Unexpect error.Try again later.');
           }
 
+          removeAllCart();
           window.location.href = 'orders.html';
           /*
           .addEventListener('click',() => {
