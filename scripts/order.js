@@ -4,6 +4,7 @@ import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { formatCurrency } from "./utils/money.js";
 import {addToCart} from '../data/cart.js';
 
+
 async function loadPage(){
     await loadProductsFetch();
 
@@ -12,6 +13,7 @@ async function loadPage(){
     orders.forEach((order) => {
         const orderTimeString = dayjs(order.orderTime).format('MMMM D');
 
+        const orderId = order.id;
         console.log(order);
         ordersHTML += `
             <div class="order-container">
@@ -33,13 +35,13 @@ async function loadPage(){
                     </div>
                 </div>
                 <div class="order-details-grid">
-                    ${productListHTML(order)}
+                    ${productListHTML(order,orderId)}
                 </div>
             </div>
         `
     });
 
-function productListHTML(order){
+function productListHTML(order,orderId){
     let productListHTML = '';
 
     order.products.forEach((productDetail) => {
@@ -70,7 +72,7 @@ function productListHTML(order){
             </div>
 
             <div class="product-actions">
-              <a href="tracking.html">
+              <a href="tracking.html?orderId=${orderId}&productId=${product.id}">
                 <button class="track-package-button button-secondary">
                   Track package
                 </button>
