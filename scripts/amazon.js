@@ -127,7 +127,7 @@ function search()
 			if(event.key === 'Enter'){
 				const searchRequest = document.querySelector('.js-search-bar').value;
 
-				window.location.href = `amazon.html?search=${searchRequest}`;
+				window.location.href = `index.html?search=${searchRequest}`;
 			}
 		})
 		
@@ -135,7 +135,7 @@ function search()
 		.addEventListener('click',() => {
 			const searchRequest = document.querySelector('.js-search-bar').value;
 
-			window.location.href = `amazon.html?search=${searchRequest}`;
+			window.location.href = `index.html?search=${searchRequest}`;
 		});
 	}
 
